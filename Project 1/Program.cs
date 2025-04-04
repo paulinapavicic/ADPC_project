@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Project_1;
 using Project_1.Data;
+using Project_1.Minio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<MedicalDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// In Program.cs
+builder.Services.AddSingleton<ImageService>(provider =>
+    new ImageService(
+        "localhost:9000",   // MinIO server endpoint
+        "admin",            // Access key
+        "admin123"          // Secret key
+    )
+);
 
 
 builder.Services.AddEndpointsApiExplorer();

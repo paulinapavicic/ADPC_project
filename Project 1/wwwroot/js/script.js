@@ -375,45 +375,67 @@ document.getElementById('imageUploadForm').addEventListener('submit', async func
     formData.append("file", imageFile);
     formData.append("checkupId", checkupId);
 
-    const response = await fetch('https://localhost:7023/api/images/upload', {
-        method: 'POST',
-        body: formData
-    });
+    try {
+        const response = await fetch('https://localhost:7023/api/images/upload', {
+            method: 'POST',
+            body: formData
+        });
 
-    if (response.ok) {
-        alert("Image uploaded successfully!");
-        document.getElementById('imageUploadForm').reset();
-        loadImages(); // Reload images list
-    } else {
-        alert("Failed to upload image.");
-        console.error(await response.text());
+        if (response.ok) {
+            const result = await response.json();
+            alert("Image uploaded successfully!");
+            console.log("Uploaded Image URL:", result.imageUrl);
+            loadImages(); // Reload images list
+        } else {
+            const errorText = await response.text();
+            alert(`Failed to upload image: ${errorText}`);
+            console.error(errorText);
+        }
+    } catch (error) {
+        console.error("Error during upload:", error);
+        alert("An unexpected error occurred.");
     }
 });
 
-
-document.getElementById('loadImages').addEventListener('click', loadImages);
-
+// Function to load and display images
 async function loadImages() {
-    const response = await fetch('https://localhost:7023/api/images');
+    try {
+        const response = await fetch('https://localhost:7023/api/images');
 
-    if (response.ok) {
-        const images = await response.json();
-        const tableBody = document.getElementById('imagesTableBody');
+        if (response.ok) {
+            const images = await response.json();
+            const tableBody = document.getElementById('imagesTableBody');
 
-        // Clear existing rows
-        tableBody.innerHTML = '';
+            // Clear existing rows
+            tableBody.innerHTML = '';
 
-        // Populate table with images
-        images.forEach(image => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${image.imageId}</td>
-                <td>${image.checkupId}</td>
-                <td><a href="${image.imageUrl}" target="_blank">${image.imageUrl}</a></td>`;
-            tableBody.appendChild(row);
-        });
+            if (images.length === 0) {
+                // Show message if no images found
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3">No images found</td>';
+                tableBody.appendChild(row);
+                return;
+            }
 
-    } else {
-        alert("Failed to load images");
+            // Populate table with images
+            images.forEach(image => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${image.checkupId}</td>
+                    <td><img src="${image.imageUrl}" alt="Image" style="width: 100px; height: auto;"></td>`;
+                tableBody.appendChild(row);
+            });
+        } else {
+            console.error(`Failed to load images: ${response.status} ${response.statusText}`);
+            alert(`Failed to load images: ${response.status} ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error("Error loading images:", error);
+        alert("Error loading images. See console for details.");
     }
 }
+
+
+
+
+
