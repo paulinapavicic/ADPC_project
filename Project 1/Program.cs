@@ -21,6 +21,7 @@ builder.Services.AddSingleton<ImageService>(provider =>
 );
 
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

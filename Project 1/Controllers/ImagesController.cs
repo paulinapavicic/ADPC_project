@@ -52,7 +52,7 @@ namespace Project_1.Controllers
                 var image = new Image
                 {
                     CheckupId = checkupId,
-                    ImageUrl = imageUrl
+                    ImageUrl = $"http://localhost:9000/{bucketName}/{objectName}"
                 };
 
                 _context.Images.Add(image);
@@ -70,15 +70,7 @@ namespace Project_1.Controllers
         [HttpGet]
         public async Task<IActionResult> GetImages()
         {
-            var images = await _context.Images
-                .Select(image => new
-                {
-                    image.ImageId,
-                    image.CheckupId,
-                    image.ImageUrl
-                })
-                .ToListAsync();
-
+            var images = await _context.Images.ToListAsync();
             return Ok(images);
         }
 

@@ -364,7 +364,7 @@ document.getElementById('imageUploadForm').addEventListener('submit', async func
     e.preventDefault();
 
     const checkupId = document.getElementById('checkupId').value;
-    const imageFile = document.getElementById('imageFile').files[0];
+    const imageFile = document.getElementById('imageFile').files[0]; // Get the selected file
 
     if (!imageFile) {
         alert("Please select a file.");
@@ -372,20 +372,18 @@ document.getElementById('imageUploadForm').addEventListener('submit', async func
     }
 
     const formData = new FormData();
-    formData.append("file", imageFile);
-    formData.append("checkupId", checkupId);
+    formData.append("file", imageFile); // Append the file
+    formData.append("checkupId", checkupId); // Append the checkup ID
 
     try {
         const response = await fetch('https://localhost:7023/api/images/upload', {
             method: 'POST',
-            body: formData
+            body: formData, // Send the form data
         });
 
         if (response.ok) {
-            const result = await response.json();
             alert("Image uploaded successfully!");
-            console.log("Uploaded Image URL:", result.imageUrl);
-            loadImages(); // Reload images list
+            document.getElementById('imageUploadForm').reset(); // Reset the form
         } else {
             const errorText = await response.text();
             alert(`Failed to upload image: ${errorText}`);
@@ -397,43 +395,58 @@ document.getElementById('imageUploadForm').addEventListener('submit', async func
     }
 });
 
+
 // Function to load and display images
-async function loadImages() {
+document.getElementById('loadImages').addEventListener('click', async function () {
     try {
+        console.log("Fetching images from /api/images...");
         const response = await fetch('https://localhost:7023/api/images');
 
         if (response.ok) {
+            console.log("Images fetched successfully.");
             const images = await response.json();
-            const tableBody = document.getElementById('imagesTableBody');
+            console.log("Fetched images:", images);
 
-            // Clear existing rows
+            const tableBody = document.getElementById('imagesTableBody');
             tableBody.innerHTML = '';
 
             if (images.length === 0) {
-                // Show message if no images found
-                const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="3">No images found</td>';
-                tableBody.appendChild(row);
+                tableBody.innerHTML = `<tr><td colspan="4">No images found in database</td></tr>`;
                 return;
             }
 
-            // Populate table with images
             images.forEach(image => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
+                    <td>${image.imageId}</td>
                     <td>${image.checkupId}</td>
-                    <td><img src="${image.imageUrl}" alt="Image" style="width: 100px; height: auto;"></td>`;
+                    <td>
+                        <a href="${image.imageUrl}" target="_blank" class="image-link">
+                            View Image
+                        </a>
+                    </td>
+                    <td>
+                        <img src="${image.imageUrl}" alt="Image preview" class="thumbnail">
+                    </td>
+                `;
                 tableBody.appendChild(row);
             });
         } else {
+            const errorText = await response.text();
             console.error(`Failed to load images: ${response.status} ${response.statusText}`);
-            alert(`Failed to load images: ${response.status} ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status}\n${errorText}`);
         }
     } catch (error) {
         console.error("Error loading images:", error);
-        alert("Error loading images. See console for details.");
+        alert("Failed to load images. Check console for details.");
     }
-}
+});
+
+
+
+
+
+
 
 
 

@@ -168,23 +168,30 @@
                         <label for="imageFile">Select Image:</label>
                         <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
 
-                        <section id="manage-images">
-                            <h2>Manage Images</h2>
+                        <button type="submit">Upload Image</button>
+                    </form>
+                </section>
 
-                            <!-- Button to Load Images -->
-                            <button id="loadImages">Load Images</button>
+                <section id="image-section">
+                    <h2>Image Management</h2>
+                    <button id="loadImages" class="btn">Load All Images</button>
 
-                            <!-- Table to Display Images -->
-                            <table id="imagesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Checkup ID</th>
-                                        <th>Image</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="imagesTableBody"></tbody>
-                            </table>
-                        </section>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image ID</th>
+                                <th>Checkup ID</th>
+                                <th>Image Link</th>
+                                <th>Preview</th>
+                            </tr>
+                        </thead>
+                        <tbody id="imagesTableBody"></tbody>
+                    </table>
+
+                </section>
+
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿using Minio;
+using Minio.ApiEndpoints;
 using Minio.DataModel.Args;
 
 namespace Project_1.Minio
@@ -52,6 +53,8 @@ namespace Project_1.Minio
 
             return await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs);
         }
+
+       
 
     }
 }
