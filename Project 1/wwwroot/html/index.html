@@ -18,7 +18,6 @@
         <!-- Section for Patients -->
         <section id="patient-section">
             <h2>Manage Patients</h2>
-            <!-- Add Patient Form -->
             <form id="patientForm">
                 <label for="personalIdentificationNumber">Identification Number:</label>
                 <input type="text" id="personalIdentificationNumber" name="personalIdentificationNumber" required>
@@ -55,16 +54,19 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="patientsTableBody"></tbody> <!-- This must exist -->
+                <tbody id="patientsTableBody"></tbody> 
             </table>
 
+
         </section>
+
+
 
 
         <!-- Section for Medical Records -->
         <section id="medical-record-section">
             <h2>Manage Medical Records</h2>
-            <!-- Add Medical Record Form -->
+           
             <form id="medicalRecordForm">
                 <label for="patientId">Patient ID:</label>
                 <input type="number" id="patientId" name="patientId" required>
@@ -80,123 +82,134 @@
 
                 <button type="submit">Add Medical Record</button>
             </form>
+        </section>
 
-            <!-- Display Medical Records -->
-            <section id="medical-record-section">
-                <h2>All Medical Records</h2>
-                <!-- Button to Load All Medical Records -->
-                <button id="loadAllMedicalRecords">Load All Medical Records</button>
+        <!-- Display Medical Records -->
+        <section id="medical-record-section">
+            <h2>All Medical Records</h2>
+           
+            <button id="loadAllMedicalRecords">Load All Medical Records</button>
 
-                <!-- Table to Display Medical Records -->
-                <table id="medicalRecordsTable">
-                    <thead>
-                        <tr>
+            <table id="medicalRecordsTable">
+                <thead>
+                    <tr>
 
-                            <th>Patient ID</th>
-                            <th>Disease Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="medicalRecordsTableBody"></tbody> <!-- Table body for dynamic rows -->
-                </table>
-            </section>
-
-
-            <!-- Section for Checkups -->
-            <section id="checkup-section">
-                <h2>Manage Checkups</h2>
-                <!-- Add Checkup Form -->
-                <form id="checkupForm">
-                    <label for="checkupPatientId">Patient ID:</label>
-                    <input type="number" id="checkupPatientId" name="checkupPatientId" required>
-
-                    <label for="procedureCode">Procedure Code:</label>
-                    <select id="procedureCode" name="procedureCode">
-                        <!-- Checkup Types from the Image -->
-                        <option value="GP">General Physical Exam (GP)</option>
-                        <option value="BLOOD">Blood Test (BLOOD)</option>
-                        <option value="X-RAY">X-Ray Scan (X-RAY)</option>
-                        <option value="CT">CT Scan (CT)</option>
-                        <option value="MR">MRI Scan (MR)</option>
-                        <option value="ULTRA">Ultrasound (ULTRA)</option>
-                        <option value="ECG">Electrocardiogram (ECG)</option>
-                        <option value="ECHO">Echocardiogram (ECHO)</option>
-                        <option value="EYE">Eye Examination (EYE)</option>
-                        <option value="DERM">Dermatological Examination (DERM)</option>
-                        <option value="DENTA">Dental Checkup (DENTA)</option>
-                        <option value="MAMMO">Mammogram (MAMMO)</option>
-                        <option value="NEURO">Neurological Examination (NEURO)</option>
-                    </select>
-
-                    <label for="checkupDate">Checkup Date:</label>
-                    <input type="datetime-local" id="checkupDate" name="checkupDate" required>
-
-                    <button type="submit">Add Checkup</button>
-                </form>
-
-                <!-- Display Checkups -->
-                <section id="check-up-section">
-                    <h2>All Check-Ups</h2>
-                    <!-- Button to Load All Check-Ups -->
-                    <button id="loadAllCheckups">Load All Check-Ups</button>
-
-                    <!-- Table to Display Check-Ups -->
-                    <table id="check-ups-table">
-                        <thead>
-                            <tr>
-                                <th>Check-Up ID</th>
-                                <th>Patient ID</th>
-                                <th>Procedure Code</th>
-                                <th>Check-Up Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="checkupsTableBody"></tbody> <!-- Table body for dynamic rows -->
-                    </table>
-
-                </section>
-
-                <section id="image-section">
-                    <h2>Manage Images</h2>
-                    <!-- Form for uploading images -->
-                    <form id="imageUploadForm">
-                        <label for="checkupId">Checkup ID:</label>
-                        <input type="number" id="checkupId" name="checkupId" required>
-
-                        <label for="imageFile">Select Image:</label>
-                        <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
-
-                        <button type="submit">Upload Image</button>
-                    </form>
-                </section>
-
-                <section id="image-section">
-                    <h2>Image Management</h2>
-                    <button id="loadImages" class="btn">Load All Images</button>
+                        <th>Patient ID</th>
+                        <th>Disease Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="medicalRecordsTableBody"></tbody> 
+            </table>
+        </section>
 
 
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Image ID</th>
-                                <th>Checkup ID</th>
-                                <th>Image Link</th>
-                                <th>Preview</th>
-                            </tr>
-                        </thead>
-                        <tbody id="imagesTableBody"></tbody>
-                    </table>
-
-                </section>
+        <section>
+            <h2>Export patients data</h2>
+            <form>
+                <button type="submit" class="btn">Export</button>
+            </form>
+        </section>
 
 
 
+        <!-- Section for Checkups -->
+        <section id="checkup-section">
+            <h2>Manage Checkups</h2>
+            
+            <form id="checkupForm">
+                <label for="checkupPatientId">Patient ID:</label>
+                <input type="number" id="checkupPatientId" name="checkupPatientId" required>
+
+                <label for="procedureCode">Procedure Code:</label>
+                <select id="procedureCode" name="procedureCode">
+                    <option value="GP">General Physical Exam (GP)</option>
+                    <option value="BLOOD">Blood Test (BLOOD)</option>
+                    <option value="X-RAY">X-Ray Scan (X-RAY)</option>
+                    <option value="CT">CT Scan (CT)</option>
+                    <option value="MR">MRI Scan (MR)</option>
+                    <option value="ULTRA">Ultrasound (ULTRA)</option>
+                    <option value="ECG">Electrocardiogram (ECG)</option>
+                    <option value="ECHO">Echocardiogram (ECHO)</option>
+                    <option value="EYE">Eye Examination (EYE)</option>
+                    <option value="DERM">Dermatological Examination (DERM)</option>
+                    <option value="DENTA">Dental Checkup (DENTA)</option>
+                    <option value="MAMMO">Mammogram (MAMMO)</option>
+                    <option value="NEURO">Neurological Examination (NEURO)</option>
+                </select>
+
+                <label for="checkupDate">Checkup Date:</label>
+                <input type="datetime-local" id="checkupDate" name="checkupDate" required>
+
+                <button type="submit">Add Checkup</button>
+            </form>
+        </section>
+
+        <!-- Display Checkups -->
+        <section id="check-up-section">
+            <h2>All Check-Ups</h2>
+        
+            <button id="loadAllCheckups">Load All Check-Ups</button>
+
+           
+            <table id="check-ups-table">
+                <thead>
+                    <tr>
+                        <th>Check-Up ID</th>
+                        <th>Patient ID</th>
+                        <th>Procedure Code</th>
+                        <th>Check-Up Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="checkupsTableBody"></tbody> 
+            </table>
+
+        </section>
+
+        <!--Image part-->
+
+        <section id="image-section">
+            <h2>Manage Images</h2>
+            <form id="imageUploadForm">
+                <label for="checkupId">Checkup ID:</label>
+                <input type="number" id="checkupId" name="checkupId" required>
+
+                <label for="imageFile">Select Image:</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+
+                <button type="submit">Upload Image</button>
+            </form>
+        </section>
+
+        <!--Loading of all pictures-->
+        <section id="image-section">
+            <h2>Image Management</h2>
+            <button id="loadImages" class="btn">Load All Images</button>
+
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Image ID</th>
+                        <th>Checkup ID</th>
+                        <th>Image Link</th>
+                        <th>Preview</th>
+                    </tr>
+                </thead>
+                <tbody id="imagesTableBody"></tbody>
+            </table>
+
+        </section>
 
 
 
-</main>
+
+
+
+    </main>
 
     <script src="/js/script.js"></script>
 </body>

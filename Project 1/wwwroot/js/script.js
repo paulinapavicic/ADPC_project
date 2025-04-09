@@ -443,6 +443,36 @@ document.getElementById('loadImages').addEventListener('click', async function (
 });
 
 
+document.querySelector('button').addEventListener('click', async function (e) {
+    e.preventDefault(); 
+
+    try {
+        const response = await fetch('https://localhost:7023/api/patients/export', {
+            method: 'GET',
+        });
+
+        if (response.ok) {
+            const blob = await response.blob(); 
+            const url = window.URL.createObjectURL(blob); 
+            const link = document.createElement('a'); 
+            link.href = url;
+            link.download = 'patients.csv'; 
+            document.body.appendChild(link); 
+            link.click(); 
+            document.body.removeChild(link); 
+            window.URL.revokeObjectURL(url); 
+        } else {
+            alert('Failed to export patients data.');
+            console.error(`Error: ${response.status} ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Error exporting data:', error);
+        alert('An unexpected error occurred while exporting patients data.');
+    }
+});
+
+
+
 
 
 
