@@ -473,6 +473,84 @@ document.querySelector('button').addEventListener('click', async function (e) {
 
 
 
+document.getElementById('prescriptionForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const data = {
+        checkupId: parseInt(document.getElementById('checkupId').value),
+        medicationName: document.getElementById('medicationName').value,
+        dosage: document.getElementById('dosage').value,
+        startDate: document.getElementById('startDate').value,
+        endDate: document.getElementById('endDate').value || null
+    };
+
+    try {
+        const response = await fetch('https://localhost:7023/api/prescriptions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert('Prescription added successfully!');
+            document.getElementById('prescriptionForm').reset(); // Clear the form
+            loadPrescriptions(); // Reload prescriptions after adding
+        } else {
+            const errorText = await response.text();
+            alert(`Failed to add prescription: ${errorText}`);
+            console.error(errorText);
+        }
+    } catch (error) {
+        console.error('Error adding prescription:', error);
+        alert('An unexpected error occurred.');
+    }
+});
+
+
+document.getElementById('loadPrescriptions').addEventListener('click', loadPrescriptions);
+
+async function loadPrescriptions() {
+    try {
+        const response = await fetch('https://localhost:7023/api/prescriptions');
+
+        if (response.ok) {
+            const prescriptions = await response.json();
+            const tableBody = document.getElementById('prescriptionsTableBody');
+
+            // Clear existing rows
+            tableBody.innerHTML = '';
+
+            if (prescriptions.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6">No prescriptions found.</td></tr>';
+                return;
+            }
+
+            // Populate table with prescription data
+            prescriptions.forEach(prescription => {
+                const startDate = new Date(prescription.startDate).toLocaleDateString();
+                const endDate = prescription.endDate ? new Date(prescription.endDate).toLocaleDateString() : 'N/A';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${prescription.prescriptionId}</td>
+                    <td>${prescription.medicationName}</td>
+                    <td>${prescription.dosage}</td>
+                    <td>${startDate}</td>
+                    <td>${endDate}</td>
+                    <td>${prescription.checkupId}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            const errorText = await response.text();
+            alert(`Failed to load prescriptions: ${errorText}`);
+            console.error(errorText);
+        }
+    } catch (error) {
+        console.error('Error loading prescriptions:', error);
+        alert('An unexpected error occurred.');
+    }
+}
 
 
 

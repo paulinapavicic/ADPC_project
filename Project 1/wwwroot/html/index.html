@@ -54,7 +54,7 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="patientsTableBody"></tbody> 
+                <tbody id="patientsTableBody"></tbody>
             </table>
 
 
@@ -66,7 +66,7 @@
         <!-- Section for Medical Records -->
         <section id="medical-record-section">
             <h2>Manage Medical Records</h2>
-           
+
             <form id="medicalRecordForm">
                 <label for="patientId">Patient ID:</label>
                 <input type="number" id="patientId" name="patientId" required>
@@ -87,7 +87,7 @@
         <!-- Display Medical Records -->
         <section id="medical-record-section">
             <h2>All Medical Records</h2>
-           
+
             <button id="loadAllMedicalRecords">Load All Medical Records</button>
 
             <table id="medicalRecordsTable">
@@ -101,7 +101,7 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="medicalRecordsTableBody"></tbody> 
+                <tbody id="medicalRecordsTableBody"></tbody>
             </table>
         </section>
 
@@ -118,7 +118,7 @@
         <!-- Section for Checkups -->
         <section id="checkup-section">
             <h2>Manage Checkups</h2>
-            
+
             <form id="checkupForm">
                 <label for="checkupPatientId">Patient ID:</label>
                 <input type="number" id="checkupPatientId" name="checkupPatientId" required>
@@ -150,10 +150,10 @@
         <!-- Display Checkups -->
         <section id="check-up-section">
             <h2>All Check-Ups</h2>
-        
+
             <button id="loadAllCheckups">Load All Check-Ups</button>
 
-           
+
             <table id="check-ups-table">
                 <thead>
                     <tr>
@@ -164,10 +164,58 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="checkupsTableBody"></tbody> 
+                <tbody id="checkupsTableBody"></tbody>
             </table>
 
         </section>
+
+
+
+
+
+        <section id="prescription-section">
+            <h2>Manage Prescriptions</h2>
+
+            <!-- Form for adding a new prescription -->
+            <form id="prescriptionForm">
+                <label for="checkupId">Checkup ID:</label>
+                <input type="number" id="checkupId" name="checkupId" required>
+
+                <label for="medicationName">Medication Name:</label>
+                <input type="text" id="medicationName" name="medicationName" required>
+
+                <label for="dosage">Dosage:</label>
+                <input type="text" id="dosage" name="dosage" required>
+
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" required>
+
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" name="endDate">
+
+                <button type="submit">Add Prescription</button>
+            </form>
+
+            <!-- Button to load prescriptions -->
+            <button id="loadPrescriptions">Load Prescriptions</button>
+
+            <!-- Table to display prescriptions -->
+            <table id="prescriptionsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Medication Name</th>
+                        <th>Dosage</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Checkup ID</th>
+                    </tr>
+                </thead>
+                <tbody id="prescriptionsTableBody"></tbody>
+            </table>
+        </section>
+
+
 
         <!--Image part-->
 
