@@ -19,9 +19,26 @@ namespace Project_2
     /// </summary>
     public partial class ActionWindow : Window
     {
-        public ActionWindow()
+        public List<string> SelectedItems { get; private set; } = new List<string>();
+
+        public ActionWindow(string title, string message)
         {
             InitializeComponent();
+            txtTitle.Text = title;
+            txtMessage.Text = message;
+            // Load default cohorts
+            lstItems.ItemsSource = Models.Constraints.Constraints.DefaultCohorts;
+        }
+
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedItems = lstItems.SelectedItems.Cast<string>().ToList();
+            DialogResult = true;
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

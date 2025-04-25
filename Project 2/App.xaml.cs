@@ -13,5 +13,13 @@ namespace Project_2
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            // Initialize MinIO bucket if needed
+            var minioService = new Services.Storage.MinioService();
+            minioService.InitializeBucketAsync().Wait();
+        }
     }
 }

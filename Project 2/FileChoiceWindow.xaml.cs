@@ -19,9 +19,28 @@ namespace Project_2
     /// </summary>
     public partial class FileChoiceWindow : Window
     {
-        public FileChoiceWindow()
+        public string SelectedFile { get; private set; }
+        public FileChoiceWindow(List<string> files)
         {
             InitializeComponent();
+            lstFiles.ItemsSource = files;
+        }
+        private void btnSelect_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstFiles.SelectedItem is string fileName)
+            {
+                SelectedFile = fileName;
+                DialogResult = true;
+            }
+            else
+            {
+                MessageBox.Show("Please select a file.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }
