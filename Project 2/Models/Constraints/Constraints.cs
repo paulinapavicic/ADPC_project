@@ -26,8 +26,8 @@ namespace Project_2.Models.Constraints
           };
 
         public static readonly string MinioEndpoint = "localhost:9000";
-        public static readonly string MinioAccessKey = "minioadmin";
-        public static readonly string MinioSecretKey = "minioadmin";
+        public static readonly string MinioAccessKey = "admin";
+        public static readonly string MinioSecretKey = "admin123";
         public static readonly string MinioBucketName = "tcga-data";
 
         public static readonly string XenaApiBaseUrl = "https://ucscpublic.xenahubs.net";

@@ -32,7 +32,14 @@ namespace Project_2
 
         public MainWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
 
             // Initialize services
             _xenaService = new XenaScraperService();
