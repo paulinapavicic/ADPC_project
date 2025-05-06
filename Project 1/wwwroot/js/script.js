@@ -2,11 +2,11 @@
 // Patients Section
 // =========================
 
-// Add event listener to the patient form
+
 document.getElementById('patientForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    // Get form data
+  
     
     const personalIdentificationNumber = document.getElementById('personalIdentificationNumber').value;
     const name = document.getElementById('name').value;
@@ -14,7 +14,7 @@ document.getElementById('patientForm').addEventListener('submit', async function
     const dateOfBirth = document.getElementById('dateOfBirth').value;
     const sex = document.getElementById('sex').value;
 
-    // Send POST request to the API
+  
     const response = await fetch('https://localhost:7023/api/patients', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -30,14 +30,13 @@ document.getElementById('patientForm').addEventListener('submit', async function
     if (response.ok) {
         alert('Patient added successfully!');
         document.getElementById('patientForm').reset();
-        loadPatients(); // Reload patients list
+        loadPatients(); 
     } else {
         alert('Failed to add patient.');
         console.error(await response.text());
     }
 });
 
-// Load patients from the API
 document.getElementById('loadPatients').addEventListener('click', loadPatients);
 
 async function loadPatients() {
@@ -47,13 +46,13 @@ async function loadPatients() {
         const patients = await response.json();
         const tableBody = document.getElementById('patientsTableBody');
 
-        // Clear existing rows
+        
         tableBody.innerHTML = '';
 
-        // Populate table with patients
+      
         patients.forEach(patient => {
             // Format Date of Birth to YYYY-MM-DD
-            const formattedDate = new Date(patient.dateOfBirth).toLocaleDateString('en-GB'); // Formats as DD/MM/YYYY
+            const formattedDate = new Date(patient.dateOfBirth).toLocaleDateString('en-GB'); 
 
 
             const row = document.createElement('tr');
@@ -76,42 +75,47 @@ async function loadPatients() {
     }
 }
 
-async function editPatient(patientId) {
-    // Prompt user for new data
-    const newName = prompt("Enter new name:");
-    const newSurname = prompt("Enter new surname:");
-    const newDateOfBirth = prompt("Enter new date of birth (YYYY-MM-DD):");
-    const newSex = prompt("Enter new sex (M/F):");
+document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const row = btn.closest('tr');
+        const patientId = row.dataset.patientId;
+        row.innerHTML = `
+      <td><input value="${row.querySelector('.name').innerText}" class="edit-name"></td>
+      <td><input value="${row.querySelector('.surname').innerText}" class="edit-surname"></td>
+      <td><input value="${row.querySelector('.dob').innerText}" class="edit-dob"></td>
+      <td><input value="${row.querySelector('.sex').innerText}" class="edit-sex"></td>
+      <td>
+        <button class="save-btn">Save</button>
+        <button class="cancel-btn">Cancel</button>
+      </td>
+    `;
 
-    if (!newName || !newSurname || !newDateOfBirth || !newSex) {
-        alert("All fields are required.");
-        return;
-    }
+        row.querySelector('.save-btn').onclick = async function () {
+            const updatedPatient = {
+                name: row.querySelector('.edit-name').value,
+                surname: row.querySelector('.edit-surname').value,
+                dateOfBirth: row.querySelector('.edit-dob').value,
+                sex: row.querySelector('.edit-sex').value
+            };
+            const response = await fetch(`https://localhost:7023/api/patients/${patientId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedPatient)
+            });
+            if (response.ok) {
+                alert("Patient updated!");
+                // Optionally reload or update row display
+            } else {
+                alert("Failed to update patient.");
+            }
+        };
 
-    try {
-        // Send PUT request to update patient
-        const response = await fetch(`https://localhost:7023/api/patients/${patientId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: newName,
-                surname: newSurname,
-                dateOfBirth: newDateOfBirth,
-                sex: newSex
-            })
-        });
-
-        if (response.ok) {
-            alert("Patient updated successfully!");
-            loadPatients(); // Reload patients table
-        } else {
-            alert("Failed to update patient.");
-            console.error(await response.text());
-        }
-    } catch (error) {
-        console.error("Error occurred while updating patient:", error);
-    }
-}
+        row.querySelector('.cancel-btn').onclick = function () {
+            // Reload the table or restore the original row
+            loadPatients();
+        };
+    });
+});
 
 
 
@@ -126,7 +130,7 @@ async function deletePatient(patientId) {
 
     if (response.ok) {
         alert("Patient deleted successfully!");
-        loadPatients(); // Reload the table
+        loadPatients(); 
     } else {
         alert("Failed to delete patient.");
     }
@@ -138,17 +142,17 @@ async function deletePatient(patientId) {
 // Medical Records Section
 // =========================
 
-// Add event listener to the medical record form
+
 document.getElementById('medicalRecordForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    // Get form data
+    
     const patientId = document.getElementById('patientId').value;
     const diseaseName = document.getElementById('diseaseName').value;
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
-    // Send POST request to the API
+    
     const response = await fetch('https://localhost:7023/api/medicalrecords', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -170,32 +174,26 @@ document.getElementById('medicalRecordForm').addEventListener('submit', async fu
     }
 });
 
-// Load medical records from the API
 document.getElementById('loadAllMedicalRecords').addEventListener('click', loadAllMedicalRecords);
 
 async function loadAllMedicalRecords() {
-    console.log("Fetching all medical records..."); // Debugging log
+    console.log("Fetching all medical records...");
 
     try {
-        // Fetch all medical records from the API
-        const response = await fetch('https://localhost:7023/api/medicalrecords'); // Correct endpoint for all records
+        
+        const response = await fetch('https://localhost:7023/api/medicalrecords'); 
 
         if (response.ok) {
-            const medicalRecords = await response.json(); // Parse JSON response
-            console.log("Fetched all medical records:", medicalRecords); // Debugging log
+            const medicalRecords = await response.json(); 
+            console.log("Fetched all medical records:", medicalRecords); 
 
-            const tableBody = document.getElementById('medicalRecordsTableBody'); // Get table body element
+            const tableBody = document.getElementById('medicalRecordsTableBody'); 
 
-            // Clear existing rows
+           
             tableBody.innerHTML = '';
 
-            // Populate table with medical records
             medicalRecords.forEach(record => {
-                console.log("Adding record to table:", record); // Debugging log
-
-               
-
-                
+                console.log("Adding record to table:", record); 
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -232,7 +230,7 @@ async function deleteMedicalRecord(medicalRecordId) {
 
         if (response.ok) {
             alert("Medical record deleted successfully!");
-            loadAllMedicalRecords(); // Reload the medical records table
+            loadAllMedicalRecords(); 
         } else {
             alert("Failed to delete medical record.");
             console.error("Error response:", await response.text());
@@ -249,16 +247,16 @@ async function deleteMedicalRecord(medicalRecordId) {
 // Checkups Section
 // =========================
 
-// Add event listener to the checkup form
+
 document.getElementById('checkupForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    // Get form data
+   
     const patientId = document.getElementById('checkupPatientId').value;
     const procedureCode = document.getElementById('procedureCode').value;
     const checkupDate = document.getElementById('checkupDate').value;
 
-    // Send POST request to the API
+    
     const response = await fetch(`https://localhost:7023/api/checkups`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -279,26 +277,26 @@ document.getElementById('checkupForm').addEventListener('submit', async function
 document.getElementById('loadAllCheckups').addEventListener('click', loadAllCheckups);
 
 async function loadAllCheckups() {
-    console.log("Fetching all checkups..."); // Debugging log
+    console.log("Fetching all checkups..."); 
 
     try {
-        // Fetch all checkups from the API
-        const response = await fetch('https://localhost:7023/api/checkups'); // Correct endpoint for all records
+        
+        const response = await fetch('https://localhost:7023/api/checkups');
 
         if (response.ok) {
-            const checkups = await response.json(); // Parse JSON response
-            console.log("Fetched all checkups:", checkups); // Debugging log
+            const checkups = await response.json(); 
+            console.log("Fetched all checkups:", checkups);
 
-            const tableBody = document.getElementById('checkupsTableBody'); // Get table body element
+            const tableBody = document.getElementById('checkupsTableBody');
 
-            // Clear existing rows
+           
             tableBody.innerHTML = '';
 
-            // Populate table with checkups
+           
             checkups.forEach(checkup => {
-                console.log("Adding record to table:", checkup); // Debugging log
+                console.log("Adding record to table:", checkup); 
 
-                // Format Check-Up Date to a readable format
+                
                 const formattedDate = new Date(checkup.checkupDate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -320,7 +318,7 @@ async function loadAllCheckups() {
 <td>
             <button onclick="editCheckup(${checkup.checkupId})">Edit</button>
             <button onclick="deleteCheckup(${checkup.checkupId})">Delete</button>
-        </td>`; // Display formatted date and time
+        </td>`; 
                 tableBody.appendChild(row);
             });
         } else {
@@ -346,7 +344,7 @@ async function deleteCheckup(checkupId) {
 
         if (response.ok) {
             alert("Checkup deleted successfully!");
-            loadAllCheckups(); // Reload the checkups table
+            loadAllCheckups(); 
         } else {
             alert("Failed to delete checkup.");
             console.error("Error response:", await response.text());
@@ -358,13 +356,15 @@ async function deleteCheckup(checkupId) {
 
 
 
+// =========================
+// Image Section
+// =========================
 
-// ========================= Images Section
 document.getElementById('imageUploadForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const checkupId = document.getElementById('checkupId').value;
-    const imageFile = document.getElementById('imageFile').files[0]; // Get the selected file
+    const imageFile = document.getElementById('imageFile').files[0]; 
 
     if (!imageFile) {
         alert("Please select a file.");
@@ -372,18 +372,18 @@ document.getElementById('imageUploadForm').addEventListener('submit', async func
     }
 
     const formData = new FormData();
-    formData.append("file", imageFile); // Append the file
-    formData.append("checkupId", checkupId); // Append the checkup ID
+    formData.append("file", imageFile); 
+    formData.append("checkupId", checkupId); 
 
     try {
         const response = await fetch('https://localhost:7023/api/images/upload', {
             method: 'POST',
-            body: formData, // Send the form data
+            body: formData, 
         });
 
         if (response.ok) {
             alert("Image uploaded successfully!");
-            document.getElementById('imageUploadForm').reset(); // Reset the form
+            document.getElementById('imageUploadForm').reset(); 
         } else {
             const errorText = await response.text();
             alert(`Failed to upload image: ${errorText}`);
@@ -396,7 +396,6 @@ document.getElementById('imageUploadForm').addEventListener('submit', async func
 });
 
 
-// Function to load and display images
 document.getElementById('loadImages').addEventListener('click', async function () {
     try {
         console.log("Fetching images from /api/images...");
@@ -428,6 +427,10 @@ document.getElementById('loadImages').addEventListener('click', async function (
                     <td>
                         <img src="${image.imageUrl}" alt="Image preview" class="thumbnail">
                     </td>
+<td>
+            
+            <button onclick="deleteImage(${image.imageId})">Delete</button>
+        </td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -441,6 +444,32 @@ document.getElementById('loadImages').addEventListener('click', async function (
         alert("Failed to load images. Check console for details.");
     }
 });
+
+async function deleteImage(imageId) {
+    const confirmDelete = confirm("Are you sure you want to delete this image?");
+
+    if (!confirmDelete) return;
+
+    try {
+        const response = await fetch(`https://localhost:7023/api/images/${imageId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert("Image deleted successfully!");
+            loadImages(); 
+        } else {
+            alert("Failed to delete image.");
+            console.error("Error response:", await response.text());
+        }
+    } catch (error) {
+        console.error("Error occurred while deleting image:", error);
+    }
+}
+
+// =========================
+// Export Section
+// =========================
 
 
 document.querySelector('button').addEventListener('click', async function (e) {
@@ -471,10 +500,14 @@ document.querySelector('button').addEventListener('click', async function (e) {
     }
 });
 
+// =========================
+// Prescription Section
+// =========================
+
 
 
 document.getElementById('prescriptionForm').addEventListener('submit', async function (e) {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
 
     const data = {
         checkupId: parseInt(document.getElementById('checkupId').value),
@@ -493,8 +526,8 @@ document.getElementById('prescriptionForm').addEventListener('submit', async fun
 
         if (response.ok) {
             alert('Prescription added successfully!');
-            document.getElementById('prescriptionForm').reset(); // Clear the form
-            loadPrescriptions(); // Reload prescriptions after adding
+            document.getElementById('prescriptionForm').reset(); 
+            loadPrescriptions(); 
         } else {
             const errorText = await response.text();
             alert(`Failed to add prescription: ${errorText}`);
@@ -517,7 +550,7 @@ async function loadPrescriptions() {
             const prescriptions = await response.json();
             const tableBody = document.getElementById('prescriptionsTableBody');
 
-            // Clear existing rows
+            
             tableBody.innerHTML = '';
 
             if (prescriptions.length === 0) {
@@ -525,7 +558,6 @@ async function loadPrescriptions() {
                 return;
             }
 
-            // Populate table with prescription data
             prescriptions.forEach(prescription => {
                 const startDate = new Date(prescription.startDate).toLocaleDateString();
                 const endDate = prescription.endDate ? new Date(prescription.endDate).toLocaleDateString() : 'N/A';
@@ -538,6 +570,9 @@ async function loadPrescriptions() {
                     <td>${startDate}</td>
                     <td>${endDate}</td>
                     <td>${prescription.checkupId}</td>
+<td> <button onclick="editPrescription(${prescription.prescriptionId})">Edit</button>
+            <button onclick="deletePrescription(${prescription.prescriptionId})">Delete</button>
+        </td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -554,7 +589,27 @@ async function loadPrescriptions() {
 
 
 
+async function deletePrescription(prescriptionId) {
+    const confirmDelete = confirm("Are you sure you want to delete this prescription?");
 
+    if (!confirmDelete) return;
+
+    try {
+        const response = await fetch(`https://localhost:7023/api/prescriptions/${prescriptionId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert("Prescription deleted successfully!");
+            loadImages();
+        } else {
+            alert("Failed to delete prescription.");
+            console.error("Error response:", await response.text());
+        }
+    } catch (error) {
+        console.error("Error occurred while deleting prescription:", error);
+    }
+}
 
 
 

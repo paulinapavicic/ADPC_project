@@ -74,6 +74,18 @@ namespace Project_1.Controllers
             return Ok(images);
         }
 
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteImage(int id)
+        {
+            var images = await _context.Images.FindAsync(id);
+            if (images == null) return NotFound();
+
+            _context.Images.Remove(images);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
     }
 
 }
