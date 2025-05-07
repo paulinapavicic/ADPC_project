@@ -56,7 +56,7 @@ namespace Project_1.Controllers
 
             existingCheckup.PatientId = checkupDTO.PatientId;
             existingCheckup.ProcedureCode = checkupDTO.ProcedureCode;
-            existingCheckup.CheckupDate = checkupDTO.CheckupDate;
+            existingCheckup.CheckupDate = DateTime.SpecifyKind(checkupDTO.CheckupDate, DateTimeKind.Utc);
 
             await _context.SaveChangesAsync();
             return Ok();

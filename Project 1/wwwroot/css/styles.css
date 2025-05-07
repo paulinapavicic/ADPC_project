@@ -41,7 +41,7 @@ form {
     }
 
     form button {
-        background-color: red;
+        background-color: cornflowerblue;
         color: white;
         border: none;
         border-radius: 5px;
@@ -62,3 +62,15 @@ table {
         background-color: #007BFF;
         color: white;
     }
+
+
+.btn-red {
+    background-color: #f44336 !important; /* Red */
+    color: white !important;
+    border: none;
+}
+
+
+
+
+
