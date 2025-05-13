@@ -60,7 +60,7 @@ namespace Project_1.Controllers
             var existingPatient = await _context.Patients.FindAsync(id);
             if (existingPatient == null) return NotFound();
 
-            // Update fields from DTO
+          
             existingPatient.PersonalIdentificationNumber = patientDTO.PersonalIdentificationNumber;
             existingPatient.Name = patientDTO.Name;
             existingPatient.Surname = patientDTO.Surname;

@@ -17,7 +17,7 @@ namespace Project_1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+
 
 
             modelBuilder.Entity<Patient>().HasKey(p => p.PatientId);
@@ -56,7 +56,7 @@ namespace Project_1.Data
                     v => v
                 );
 
-            // Required property configurations for Prescription
+            
             modelBuilder.Entity<Prescription>()
                 .Property(p => p.Medicationname)
                 .IsRequired();
@@ -68,6 +68,23 @@ namespace Project_1.Data
             modelBuilder.Entity<Prescription>()
                 .Property(p => p.Startdate)
                 .IsRequired();
+
+            modelBuilder.Entity<Prescription>()
+    .Property(p => p.Startdate)
+    .HasColumnType("date");
+
+            modelBuilder.Entity<Prescription>()
+                .Property(p => p.Enddate)
+                .HasColumnType("date");
+
+
+            modelBuilder.Entity<MedicalRecord>()
+    .Property(m => m.StartDate)
+    .HasColumnType("date");
+
+            modelBuilder.Entity<MedicalRecord>()
+                .Property(m => m.EndDate)
+                .HasColumnType("date");
 
         }
     }

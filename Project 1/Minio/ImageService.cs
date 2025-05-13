@@ -17,13 +17,13 @@
 
         public async Task<string> UploadImageAsync(IFormFile file)
         {
-            // Generate a unique object name
+            
             string objectName = $"{Guid.NewGuid()}-{file.FileName}";
 
-            // Ensure bucket exists
+            
             await InitializeBucketAsync();
 
-            // Upload file to MinIO
+           
             using (var stream = file.OpenReadStream())
             {
                 await _minioHelper.UploadImageAsync(
@@ -34,7 +34,7 @@
                     file.ContentType);
             }
 
-            // Return the object name
+          
             return objectName;
         }
 

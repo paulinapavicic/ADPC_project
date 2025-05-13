@@ -64,8 +64,8 @@ namespace Project_1.Controllers
 
             prescription.Medicationname = dto.Medicationname; 
             prescription.Dosage = dto.Dosage;
-            prescription.Startdate = dto.Startdate;
-            prescription.Enddate = dto.Enddate;
+            prescription.Startdate = dto.Startdate.Date;
+            prescription.Enddate = dto.Enddate.Date;
 
             await _context.SaveChangesAsync();
             return Ok();

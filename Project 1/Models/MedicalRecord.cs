@@ -25,15 +25,6 @@ namespace Project_1.Models
 
         public Patient Patient { get; set; }
 
-        /*// Custom validation method
-        public static ValidationResult ValidateEndDate(DateTime? endDate, ValidationContext context)
-        {
-            var record = (MedicalRecord)context.ObjectInstance;
-            if (endDate.HasValue && endDate < record.StartDate)
-            {
-                return new ValidationResult("End date cannot be earlier than start date.");
-            }
-            return ValidationResult.Success;
-        }*/
+        
     }
 }

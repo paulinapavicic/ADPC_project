@@ -13,14 +13,13 @@ namespace Project_1.Minio
             _minioClient = new MinioClient()
                 .WithEndpoint(endpoint)
                 .WithCredentials(accessKey, secretKey)
-                .WithSSL(false)  // Set to true if using HTTPS
+                .WithSSL(false)  
                 .Build();
         }
 
         public IMinioClient GetClient() => _minioClient;
 
-        // Add these methods to your MinioClientHelper class
-
+        
         public async Task CreateBucketIfNotExistsAsync(string bucketName)
         {
             var bucketExistsArgs = new BucketExistsArgs().WithBucket(bucketName);

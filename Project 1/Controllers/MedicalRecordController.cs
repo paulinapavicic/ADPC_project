@@ -17,7 +17,7 @@ namespace Project_1.Controllers
             _context = context;
         }
 
-        //all
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MedicalRecord>>> GetAllMedicalRecords()
         {
@@ -27,7 +27,7 @@ namespace Project_1.Controllers
 
 
 
-        //by id 
+     
         [HttpGet("{id}")]
         public async Task<ActionResult<MedicalRecord>> GetMedicalRecordById(int id)
         {

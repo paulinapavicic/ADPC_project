@@ -73,4 +73,31 @@ table {
 
 
 
+#uploadStatus {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    min-height: 20px;
+}
 
+    #uploadStatus.success {
+        background: #dff0d8;
+        color: #3c763d;
+    }
+
+    #uploadStatus.error {
+        background: #f2dede;
+        color: #a94442;
+    }
+
+    #uploadStatus.info {
+        background: #d9edf7;
+        color: #31708f;
+    }
+
+#imagePreview img {
+    max-width: 200px;
+    max-height: 200px;
+    display: block;
+    margin-top: 10px;
+}

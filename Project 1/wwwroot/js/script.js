@@ -71,7 +71,7 @@ async function loadPatients() {
 
            
             row.querySelector('.edit-btn').addEventListener('click', function () {
-                enableInlineEditing(row, patient);
+                enableInlineEditingPatients(row, patient);
             });
         });
 
@@ -81,8 +81,8 @@ async function loadPatients() {
 }
 
 
-async function enableInlineEditing(row, patient) {
-    // Replace each cell (except ID and Actions) with an input field
+async function enableInlineEditingPatients(row, patient) {
+    
     row.innerHTML = `
         <td>${patient.patientId}</td>
         <td><input type="text" value="${patient.personalIdentificationNumber}" class="edit-pin"></td>
@@ -96,7 +96,7 @@ async function enableInlineEditing(row, patient) {
         </td>
     `;
 
-    // Save logic
+    
     row.querySelector('.save-btn').onclick = async function () {
         const updatedPatient = {
             personalIdentificationNumber: row.querySelector('.edit-pin').value,
@@ -118,7 +118,7 @@ async function enableInlineEditing(row, patient) {
         }
     };
 
-    // Cancel logic
+ 
     row.querySelector('.cancel-btn').onclick = function () {
         loadPatients();
     };
@@ -209,15 +209,16 @@ async function loadAllMedicalRecords() {
                     <td>${record.recordId}</td>
                     <td>${record.patientId}</td>
                     <td>${record.diseaseName}</td>
-                    <td>${record.startDate}</td>
-                    <td>${record.endDate}</td>
-<td> <button class="edit-btn">Edit</button>
+                    <td>${record.startDate ? record.startDate.slice(0, 10) : ''}</td>
+                <td>${record.endDate ? record.endDate.slice(0, 10) : ''}</td>
+<td>
+<button class="edit-btn">Edit</button>
             <button onclick="deleteMedicalRecord(${record.recordId})">Delete</button>
         </td>`; 
                 tableBody.appendChild(row);
 
                 row.querySelector('button.edit-btn').addEventListener('click', () => {
-                    enableInlineEditing(row, record);
+                    enableInlineEditingMedicalRecords(row, record);
                 });
 
             });
@@ -230,8 +231,7 @@ async function loadAllMedicalRecords() {
     }
 }
 
-async function enableInlineEditing(row, record) {
-    // Replace each cell (except Record ID and Actions) with input fields
+async function enableInlineEditingMedicalRecords(row, record) {
     row.innerHTML = `
         <td>${record.recordId}</td>
         <td><input type="number" value="${record.patientId}" class="edit-patientId"></td>
@@ -244,8 +244,7 @@ async function enableInlineEditing(row, record) {
         </td>
     `;
 
-    // Save logic
-    row.querySelector('.save-btn').onclick = async function () {
+    row.querySelector('.save-btn').onclick = async () => {
         const updatedRecord = {
             patientId: parseInt(row.querySelector('.edit-patientId').value),
             diseaseName: row.querySelector('.edit-diseaseName').value,
@@ -253,28 +252,30 @@ async function enableInlineEditing(row, record) {
             endDate: row.querySelector('.edit-endDate').value || null
         };
 
-        const response = await fetch(`https://localhost:7023/api/medicalrecords/${record.recordId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedRecord)
-        });
-
-        if (response.ok) {
-            alert("Medical record updated!");
-            loadAllMedicalRecords(); // Reload the table
-        } else {
-            alert("Failed to update medical record.");
-            console.error(await response.text());
+        try {
+            const response = await fetch(`https://localhost:7023/api/medicalrecords/${record.recordId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedRecord)
+            });
+            if (response.ok) {
+                alert('Medical record updated!');
+                loadAllMedicalRecords();
+            } else {
+                alert('Failed to update medical record.');
+                console.error(await response.text());
+            }
+        } catch (error) {
+            console.error('Error updating medical record:', error);
+            alert('An unexpected error occurred.');
         }
     };
 
-    // Cancel logic
-    row.querySelector('.cancel-btn').onclick = function () {
-        loadAllMedicalRecords(); 
+    row.querySelector('.cancel-btn').onclick = () => {
+        loadAllMedicalRecords();
     };
 }
 
- 
 
         
 
@@ -382,7 +383,7 @@ async function loadAllCheckups() {
                 tableBody.appendChild(row);
 
                 row.querySelector('button.edit-btn').addEventListener('click', () => {
-                    enableInlineEditing(row, checkup);
+                    enableInlineEditingCheckup(row, checkup);
                 });
 
             });
@@ -395,7 +396,7 @@ async function loadAllCheckups() {
     }
 }
 
-async function enableInlineEditing(row, checkup) {
+async function enableInlineEditingCheckup(row, checkup) {
     // Convert checkupDate to ISO date and time parts for inputs
     const datePart = checkup.checkupDate ? checkup.checkupDate.slice(0, 10) : '';
     const timePart = checkup.checkupDate ? checkup.checkupDate.slice(11, 16) : '';
@@ -414,7 +415,7 @@ async function enableInlineEditing(row, checkup) {
         </td>
     `;
 
-    // Save handler
+    
     row.querySelector('.save-btn').onclick = async () => {
         const updatedCheckupDate = `${row.querySelector('.edit-date').value}T${row.querySelector('.edit-time').value}:00`;
 
@@ -444,7 +445,7 @@ async function enableInlineEditing(row, checkup) {
         }
     };
 
-    // Cancel handler
+    
     row.querySelector('.cancel-btn').onclick = () => {
         loadAllCheckups();
     };
@@ -483,37 +484,50 @@ async function deleteCheckup(checkupId) {
 document.getElementById('imageUploadForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const checkupId = document.getElementById('checkupId').value;
-    const imageFile = document.getElementById('imageFile').files[0]; 
 
-    if (!imageFile) {
-        alert("Please select a file.");
+    const checkupIdInput = document.getElementById('CheckupId');
+    const checkupIdValue = checkupIdInput.value.trim();
+    const checkupId = parseInt(checkupIdValue, 10);
+    if (!checkupIdValue || isNaN(checkupId)) {
+        alert('Please enter a valid Checkup ID.');
+        checkupIdInput.focus();
         return;
     }
 
+    
+    const imageFileInput = document.getElementById('File');
+    if (!imageFileInput.files || imageFileInput.files.length === 0) {
+        alert('Please select an image file.');
+        imageFileInput.focus();
+        return;
+    }
+    const imageFile = imageFileInput.files[0];
+
+  
     const formData = new FormData();
-    formData.append("file", imageFile); 
-    formData.append("checkupId", checkupId); 
+    formData.append('File', imageFile);        // Must match DTO: File
+    formData.append('CheckupId', checkupId);   // Must match DTO: CheckupId
 
     try {
         const response = await fetch('https://localhost:7023/api/images/upload', {
             method: 'POST',
-            body: formData, 
+            body: formData
         });
 
         if (response.ok) {
-            alert("Image uploaded successfully!");
-            document.getElementById('imageUploadForm').reset(); 
+            alert('Image uploaded successfully!');
+            this.reset();
         } else {
             const errorText = await response.text();
-            alert(`Failed to upload image: ${errorText}`);
-            console.error(errorText);
+            alert('Failed to upload image: ' + errorText);
         }
     } catch (error) {
-        console.error("Error during upload:", error);
-        alert("An unexpected error occurred.");
+        alert('An unexpected error occurred.');
+        console.error(error);
     }
 });
+
+
 
 
 document.getElementById('loadImages').addEventListener('click', async function () {
@@ -630,7 +644,7 @@ document.getElementById('exportButton').addEventListener('click', async function
 document.getElementById('prescriptionForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    // Get values from form fields
+ 
     const checkupId = parseInt(document.getElementById('checkupId').value, 10);
     const medicationname = document.getElementById('medicationname').value;
     const dosage = document.getElementById('dosage').value;
@@ -639,7 +653,7 @@ document.getElementById('prescriptionForm').addEventListener('submit', async fun
 
     
 
-    // Send POST request
+    
     const response = await fetch('https://localhost:7023/api/prescriptions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -683,22 +697,18 @@ async function loadPrescriptions() {
             
             tableBody.innerHTML = '';
 
-            if (prescriptions.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7">No prescriptions found.</td></tr>';
-                return;
-            }
+            prescriptions.forEach(prescription=> {
+                console.log("Adding prescription to table:", prescription);
 
-            prescriptions.forEach(prescription => {
-                const startdate = new Date(prescription.startdate).toLocaleDateString();
-                const enddate = prescription.enddate ? new Date(prescription.enddate).toLocaleDateString() : 'N/A';
+            
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${prescription.prescriptionId}</td>
                     <td>${prescription.medicationname}</td>
                     <td>${prescription.dosage}</td>
-                    <td>${startdate}</td>
-                    <td>${enddate}</td>
+                   <td>${prescription.startdate ? prescription.startdate.slice(0, 10) : ''}</td>
+                <td>${prescription.enddate ? prescription.enddate.slice(0, 10) : ''}</td>
                     <td>${prescription.checkupId}</td>
 <td>  
 <button class="edit-btn">Edit</button>
@@ -707,23 +717,23 @@ async function loadPrescriptions() {
                 tableBody.appendChild(row);
 
                 row.querySelector('button.edit-btn').addEventListener('click', () => {
-                    enableInlineEditing(row, prescription);
+                    enableInlineEditingPrescription(row, prescription);
                 });
             });
         } else {
-            const errorText = await response.text();
-            alert(`Failed to load prescriptions: ${errorText}`);
-            console.error(errorText);
+            alert("Failed to load prescriptions ");
+            console.error("Error response:", await response.text());
         }
     } catch (error) {
-        console.error('Error loading prescriptions:', error);
-        alert('An unexpected error occurred.');
+        console.error("Error occurred while fetching prescriptions :", error);
+
     }
 }
 
 
-async function enableInlineEditing(row, prescription) {
-    // Replace each cell (except Prescription ID and Actions) with input fields
+
+async function enableInlineEditingPrescription(row, prescription) {
+    
     row.innerHTML = `
         <td>${prescription.prescriptionId}</td>
         <td><input type="text" value="${prescription.medicationname}" class="edit-medicationname"></td>
@@ -737,7 +747,7 @@ async function enableInlineEditing(row, prescription) {
         </td>
     `;
 
-    // Save logic
+   
     row.querySelector('.save-btn').onclick = async function () {
         const updatedPrescription = {
             medicationname: row.querySelector('.edit-medicationname').value,
@@ -756,7 +766,7 @@ async function enableInlineEditing(row, prescription) {
 
             if (response.ok) {
                 alert('Prescription updated!');
-                loadPrescriptions(); // Reload the table
+                loadPrescriptions(); 
             } else {
                 const errorText = await response.text();
                 alert(`Failed to update prescription: ${errorText}`);
@@ -767,11 +777,11 @@ async function enableInlineEditing(row, prescription) {
         }
     };
 
-    // Cancel logic
     row.querySelector('.cancel-btn').onclick = function () {
-        loadPrescriptions(); // Reload original data
+        loadPrescriptions(); 
     };
 }
+
 
 
 

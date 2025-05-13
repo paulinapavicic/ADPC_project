@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<MedicalDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// In Program.cs
+
 builder.Services.AddSingleton<ImageService>(provider =>
     new ImageService(
         "localhost:9000",   // MinIO server endpoint
@@ -33,7 +33,7 @@ app.UseDefaultFiles(new DefaultFilesOptions
     DefaultFileNames = new List<string> { "html/index.html" }
 });
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
