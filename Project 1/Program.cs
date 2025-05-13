@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Project_1;
 using Project_1.Data;
 using Project_1.Minio;
+using Project_1.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<MedicalDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<RepositoryFactory>();
 
 
 builder.Services.AddSingleton<ImageService>(provider =>

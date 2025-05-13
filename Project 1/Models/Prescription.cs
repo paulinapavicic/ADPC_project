@@ -22,6 +22,6 @@ namespace Project_1.Models
       
         public int CheckupId { get; set; }
 
-        public Checkup Checkup { get; set; }
+        public  Checkup Checkup { get; set; }
     }
 }

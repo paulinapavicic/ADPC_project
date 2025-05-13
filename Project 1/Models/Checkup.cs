@@ -21,6 +21,6 @@ namespace Project_1.Models
         public Patient Patient { get; set; }
         public ICollection<Image> Images { get; set; }
 
-        public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+        public  ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
     }
 }

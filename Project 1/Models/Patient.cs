@@ -4,6 +4,8 @@ namespace Project_1.Models
 {
     public class Patient
     {
+
+        
         public int PatientId { get; set; }
 
         [Required(ErrorMessage = "Personal Identification Number is required.")]
