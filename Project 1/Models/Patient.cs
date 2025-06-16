@@ -28,7 +28,7 @@ namespace Project_1.Models
         [RegularExpression("^[MF]$", ErrorMessage = "Sex must be 'Male' or 'Female'.")]
         public char Sex { get; set; }
 
-        public ICollection<MedicalRecord> MedicalRecords { get; set; }
-        public ICollection<Checkup> Checkups { get; set; }
+        public virtual ICollection<MedicalRecord> MedicalRecords { get; set; }
+        public virtual ICollection<Checkup> Checkups { get; set; }
     }
 }

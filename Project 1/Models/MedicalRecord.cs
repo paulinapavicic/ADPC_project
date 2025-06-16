@@ -23,7 +23,7 @@ namespace Project_1.Models
 
         public DateTime EndDate { get; set; }
 
-        public  Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
         
     }

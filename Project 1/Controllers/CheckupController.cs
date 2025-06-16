@@ -63,6 +63,28 @@ namespace Project_1.Controllers
         }
 
 
+        [HttpGet("{id}/with-details")]
+        public async Task<IActionResult> GetCheckupWithDetails(int id)
+        {
+            var checkup = await _context.Checkups.FindAsync(id);
+            if (checkup == null) return NotFound();
+
+            // Access navigation properties to trigger lazy loading
+            var images = checkup.Images?.ToList();
+            var prescriptions = checkup.Prescriptions?.ToList();
+            var patient = checkup.Patient;
+
+            // Return a DTO or anonymous object to avoid circular references
+            return Ok(new
+            {
+                checkup.CheckupId,
+                checkup.ProcedureCode,
+                checkup.CheckupDate,
+                Images = images?.Select(img => new { img.ImageId, img.ImageUrl }),
+                Prescriptions = prescriptions?.Select(p => new { p.PrescriptionId }),
+                Patient = patient != null ? new { patient.PatientId, patient.Name } : null
+            });
+        }
 
 
         [HttpDelete("{id}")]

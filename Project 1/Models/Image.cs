@@ -13,6 +13,6 @@ namespace Project_1.Models
         [Url(ErrorMessage = "Invalid URL format.")]
         public string ImageUrl { get; set; }
 
-        public Checkup Checkup { get; set; }
+        public virtual Checkup Checkup { get; set; }
     }
 }

@@ -18,9 +18,9 @@ namespace Project_1.Models
         [DataType(DataType.DateTime)]
         public DateTime CheckupDate { get; set; }
 
-        public Patient Patient { get; set; }
-        public ICollection<Image> Images { get; set; }
+        public virtual Patient Patient { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
 
-        public  ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+        public virtual  ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
     }
 }
