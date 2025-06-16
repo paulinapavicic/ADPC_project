@@ -60,7 +60,7 @@ namespace Project_1.Controllers
             existingPatient.PersonalIdentificationNumber = patientDTO.PersonalIdentificationNumber;
             existingPatient.Name = patientDTO.Name;
             existingPatient.Surname = patientDTO.Surname;
-            existingPatient.DateOfBirth = patientDTO.DateOfBirth;
+            existingPatient.DateOfBirth = DateTime.SpecifyKind(patientDTO.DateOfBirth, DateTimeKind.Utc);
             existingPatient.Sex = patientDTO.Sex;
 
             _patientRepository.Update(existingPatient);

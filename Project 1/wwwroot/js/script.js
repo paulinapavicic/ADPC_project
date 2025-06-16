@@ -397,7 +397,7 @@ async function loadAllCheckups() {
 }
 
 async function enableInlineEditingCheckup(row, checkup) {
-    // Convert checkupDate to ISO date and time parts for inputs
+   
     const datePart = checkup.checkupDate ? checkup.checkupDate.slice(0, 10) : '';
     const timePart = checkup.checkupDate ? checkup.checkupDate.slice(11, 16) : '';
 
@@ -505,8 +505,8 @@ document.getElementById('imageUploadForm').addEventListener('submit', async func
 
   
     const formData = new FormData();
-    formData.append('File', imageFile);        // Must match DTO: File
-    formData.append('CheckupId', checkupId);   // Must match DTO: CheckupId
+    formData.append('File', imageFile);        
+    formData.append('CheckupId', checkupId);   
 
     try {
         const response = await fetch('https://localhost:7023/api/images/upload', {

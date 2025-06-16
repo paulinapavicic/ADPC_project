@@ -42,13 +42,13 @@ namespace Project_1.Data
                 .HasForeignKey(i => i.CheckupId);
 
 
-            // Checkup - Prescription relationship
+           
             modelBuilder.Entity<Prescription>()
                 .HasOne(p => p.Checkup)
                 .WithMany(c => c.Prescriptions)
                 .HasForeignKey(p => p.CheckupId);
 
-            // Configure MedicationName to be stored in uppercase
+        
             modelBuilder.Entity<Prescription>()
                 .Property(p => p.Medicationname)
                 .HasConversion(
