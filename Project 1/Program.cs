@@ -7,7 +7,7 @@ using Project_1.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Add services to the container.
+
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

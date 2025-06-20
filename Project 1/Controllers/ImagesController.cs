@@ -59,7 +59,7 @@ namespace Project_1.Controllers
                     return BadRequest("Image upload not allowed for this procedure code.");
                 }
               
-                // Initialize MinIO client
+               
                 var bucketName = "images";
                 var minioHelper = new MinioClientHelper("localhost:9000", "admin", "admin123");
 
@@ -69,7 +69,7 @@ namespace Project_1.Controllers
                
                 string objectName = $"{Guid.NewGuid()}-{dto.File.FileName}";
 
-                // Upload image to MinIO
+              
                 using (var stream = dto.File.OpenReadStream())
                 {
                     await minioHelper.UploadImageAsync(bucketName, objectName, stream, dto.File.Length, dto.File.ContentType);
