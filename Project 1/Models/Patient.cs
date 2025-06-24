@@ -9,7 +9,8 @@ namespace Project_1.Models
         public int PatientId { get; set; }
 
         [Required(ErrorMessage = "Personal Identification Number is required.")]
-        [StringLength(20, ErrorMessage = "Cannot exceed 20 characters.")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "Personal Identification Number must be exactly 11 digits.")]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "Personal Identification Number must contain only digits.")]
         public string PersonalIdentificationNumber { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]

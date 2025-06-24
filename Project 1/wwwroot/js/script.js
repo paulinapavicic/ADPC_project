@@ -9,6 +9,12 @@ document.getElementById('patientForm').addEventListener('submit', async function
   
     
     const personalIdentificationNumber = document.getElementById('personalIdentificationNumber').value;
+
+    if (!/^\d{11}$/.test(personalIdentificationNumber)) {
+        alert('Personal Identification Number must be exactly 11 digits.');
+        return; 
+    }
+
     const name = document.getElementById('name').value;
     const surname = document.getElementById('surname').value;
     const dateOfBirth = document.getElementById('dateOfBirth').value;
@@ -330,9 +336,24 @@ document.getElementById('checkupForm').addEventListener('submit', async function
 
     if (response.ok) {
         alert("Check-up added successfully");
-        loadCheckups()
+        document.getElementById('checkupForm').reset();
+        loadCheckups();
+    } else {
+        
+        let errorMsg = "Failed to add checkup.";
+        try {
+            const data = await response.json();
+            errorMsg = data.message || data || errorMsg;
+        } catch {
+            try {
+                errorMsg = await response.text();
+            } catch { }
+        }
+        alert(errorMsg);
     }
+
 })
+
 
 
 document.getElementById('loadAllCheckups').addEventListener('click', loadAllCheckups);
@@ -352,7 +373,6 @@ async function loadAllCheckups() {
 
            
             tableBody.innerHTML = '';
-
            
             checkups.forEach(checkup => {
                 console.log("Adding record to table:", checkup); 
@@ -697,6 +717,7 @@ async function loadPrescriptions() {
             
             tableBody.innerHTML = '';
 
+           
             prescriptions.forEach(prescription=> {
                 console.log("Adding prescription to table:", prescription);
 
